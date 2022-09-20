@@ -1,0 +1,23 @@
+{
+  "name": "file-scanner",
+  "version": "1.0.0",
+  "description": "File Scanner",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/picolov/file-scanner.git"
+  },
+  "keywords": [
+    "File",
+    "Scanner"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/picolov/file-scanner/issues"
+  },
+  "homepage": "https://github.com/picolov/file-scanner#readme"
+}
