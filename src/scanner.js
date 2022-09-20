@@ -29,11 +29,19 @@ const scan = (filepath) => {
     return sourceLineCount;
   });
 
+  let ratio = 0;
+  if (testLineCount != 0 && sourceLineCount != 0) {
+    ratio = testLineCount / sourceLineCount;
+  }
+
+  console.log(ratio);
+
   return {
     totalTestFile: testFiles.length,
     totalTestLoc: testLineCount,
     totalSourceFile: sourceFiles.length,
     totalSourceLoc: sourceLineCount,
+    ratio: ratio,
   };
 };
 
