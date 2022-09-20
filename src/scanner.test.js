@@ -1,4 +1,4 @@
-const scanner = require("./scanner");
+const scan = require("./scanner");
 
 test("Scan folder containing 0 file", () => {
   expect(JSON.stringify(scanner.scan("../dummy/test0"))).toStrictEqual(
