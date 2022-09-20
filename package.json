@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/picolov/file-scanner/issues"
   },
-  "homepage": "https://github.com/picolov/file-scanner#readme"
+  "homepage": "https://github.com/picolov/file-scanner#readme",
+  "dependencies": {
+    "jest": "^29.0.3"
+  }
 }
