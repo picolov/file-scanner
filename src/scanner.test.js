@@ -1,5 +1,5 @@
-const scanner = require("./scanner");
+const scan = require("./scanner");
 
 test("Scan folder content", () => {
-  expect(scanner.scan().toBe(["dummy.txt"]));
+  expect((scan()).toBe(["dummy.txt"]));
 });
