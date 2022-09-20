@@ -1,48 +1,58 @@
 const path = require("path");
 const fs = require("fs");
 
-const scan = (filepath) => {
-  const folderPath = path.join(__dirname, filepath);
-  const filenames = fs.readdirSync(folderPath);
+let result = {
+  totalTestFile: 0,
+  totalTestLoc: 0,
+  totalSourceFile: 0,
+  totalSourceLoc: 0,
+};
 
-  const testFiles = [];
-  const sourceFiles = [];
+const walk = (folderPath) => {
+  const filenames = fs.readdirSync(folderPath, { withFileTypes: true });
+
   filenames.forEach((filename) => {
-    if (filename.endsWith(".test.js")) {
-      testFiles.push(filename);
-    } else if (filename.endsWith(".js")) {
-      sourceFiles.push(filename);
+    if (filename.isDirectory()) {
+      walk(path.join(folderPath, filename.name));
+    } else {
+      if (filename.name.endsWith(".spec.ts")) {
+        result.totalTestFile += 1;
+        const content = fs.readFileSync(
+          path.join(folderPath, filename.name),
+          "utf8"
+        );
+        result.totalTestLoc += content.split("\r\n").length;
+      } else if (filename.name.endsWith(".ts")) {
+        result.totalSourceFile += 1;
+        const content = fs.readFileSync(
+          path.join(folderPath, filename.name),
+          "utf8"
+        );
+        result.totalSourceLoc += content.split("\r\n").length;
+      }
     }
   });
+};
 
-  let testLineCount = 0;
-  testFiles.map((fileName) => {
-    const content = fs.readFileSync(path.join(folderPath, fileName), "utf8");
-    testLineCount += content.split("\r\n").length;
-    return testLineCount;
-  });
-
-  let sourceLineCount = 0;
-  sourceFiles.map((fileName) => {
-    const content = fs.readFileSync(path.join(folderPath, fileName), "utf8");
-    sourceLineCount += content.split("\r\n").length;
-    return sourceLineCount;
-  });
+const scan = (filepath) => {
+  console.log(`You are scanning: ${filepath}`);
+  result = {
+    totalTestFile: 0,
+    totalTestLoc: 0,
+    totalSourceFile: 0,
+    totalSourceLoc: 0,
+  };
+  const folderPath = path.join(__dirname, filepath);
+  walk(folderPath);
 
   let ratio = 0;
-  if (testLineCount != 0 && sourceLineCount != 0) {
-    ratio = testLineCount / sourceLineCount;
+  if (result.totalTestLoc != 0 && result.totalSourceLoc != 0) {
+    ratio = result.totalTestLoc / result.totalSourceLoc;
   }
+  result.ratio = ratio;
 
-  console.log(ratio);
-
-  return {
-    totalTestFile: testFiles.length,
-    totalTestLoc: testLineCount,
-    totalSourceFile: sourceFiles.length,
-    totalSourceLoc: sourceLineCount,
-    ratio: ratio,
-  };
+  console.log(`ratio: ${result.ratio}`);
+  return result;
 };
 
 module.exports = {
